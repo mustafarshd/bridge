@@ -38,53 +38,45 @@ export default function Home() {
   }
 
   return (
-    <main className="relative h-dvh w-full max-w-[430px] mx-auto overflow-hidden bg-[#faf8f5]">
-      <ScreenSlide visible={screen === 'home'}>
+    <main className="relative h-dvh w-full max-w-[430px] mx-auto overflow-hidden" style={{ background: '#130803' }}>
+      <Fade visible={screen === 'home'}>
         <HomeScreen onStart={handleStart} />
-      </ScreenSlide>
-
-      <ScreenSlide visible={screen === 'step1'}>
+      </Fade>
+      <Fade visible={screen === 'step1'}>
         <StepOne onComplete={handleStep1Done} />
-      </ScreenSlide>
-
-      <ScreenSlide visible={screen === 'step2'}>
+      </Fade>
+      <Fade visible={screen === 'step2'}>
         {screen === 'step2' && (
           <SpeechStep
             stepNumber={2}
             totalSteps={4}
             heading="Describe how you're feeling out loud."
-            buttonLabel="That's how I feel"
             onComplete={handleStep2Done}
           />
         )}
-      </ScreenSlide>
-
-      <ScreenSlide visible={screen === 'step3'}>
+      </Fade>
+      <Fade visible={screen === 'step3'}>
         {screen === 'step3' && (
           <SpeechStep
             stepNumber={3}
             totalSteps={4}
             heading="Say out loud what you have to do next."
-            buttonLabel="That's what I'm doing"
             onComplete={handleStep3Done}
           />
         )}
-      </ScreenSlide>
-
-      <ScreenSlide visible={screen === 'step4'}>
+      </Fade>
+      <Fade visible={screen === 'step4'}>
         <StepFour />
-      </ScreenSlide>
+      </Fade>
     </main>
   )
 }
 
-function ScreenSlide({ visible, children }: { visible: boolean; children: React.ReactNode }) {
+function Fade({ visible, children }: { visible: boolean; children: React.ReactNode }) {
   return (
     <div
-      className={`absolute inset-0 transition-all duration-500 ease-in-out ${
-        visible
-          ? 'opacity-100 translate-y-0 pointer-events-auto'
-          : 'opacity-0 translate-y-4 pointer-events-none'
+      className={`absolute inset-0 transition-opacity duration-300 ${
+        visible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
     >
       {children}
@@ -92,25 +84,49 @@ function ScreenSlide({ visible, children }: { visible: boolean; children: React.
   )
 }
 
+function OrangeBlurs() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
+      <div style={{
+        position: 'absolute', top: '-15%', left: '-20%',
+        width: '75vw', height: '75vw', borderRadius: '50%',
+        background: '#C84010', opacity: 0.28, filter: 'blur(90px)',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '-5%', right: '-15%',
+        width: '65vw', height: '65vw', borderRadius: '50%',
+        background: '#8B2808', opacity: 0.35, filter: 'blur(80px)',
+      }} />
+    </div>
+  )
+}
+
 function HomeScreen({ onStart }: { onStart: () => void }) {
   return (
-    <div className="flex flex-col items-center justify-between h-dvh w-full px-6 py-14">
-      <div className="flex flex-col items-center gap-2 text-center pt-6">
-        <h1 className="text-5xl font-semibold text-stone-800 tracking-tight">Bridge</h1>
-        <p className="text-stone-500 text-base font-light max-w-[220px] leading-relaxed">
+    <div className="relative flex flex-col items-center justify-between h-dvh w-full px-6 py-14">
+      <OrangeBlurs />
+
+      <div className="relative z-10 flex flex-col items-center gap-2 text-center pt-6">
+        <h1 className="text-5xl font-semibold tracking-tight" style={{ color: '#F5EDE0' }}>
+          Bridge
+        </h1>
+        <p className="text-base font-light max-w-[220px] leading-relaxed" style={{ color: 'rgba(245,237,224,0.55)' }}>
           A short exercise to shift your state and get moving.
         </p>
       </div>
 
-      <div className="w-full flex items-center justify-center">
+      <div className="relative z-10 w-full flex items-center justify-center">
         <RiveAnimation className="w-64 h-64" />
       </div>
 
-      <div className="flex flex-col items-center gap-4 w-full">
-        <p className="text-stone-400 text-sm text-center">About 2 minutes. No account needed.</p>
+      <div className="relative z-10 flex flex-col items-center gap-4 w-full">
+        <p className="text-sm text-center" style={{ color: 'rgba(245,237,224,0.4)' }}>
+          About 2 minutes. No account needed.
+        </p>
         <button
           onClick={onStart}
-          className="w-full max-w-xs py-4 rounded-2xl bg-stone-800 text-stone-50 text-base font-semibold active:scale-95 transition-transform duration-150"
+          className="w-full max-w-xs py-4 rounded-2xl text-base font-semibold active:scale-95 transition-transform duration-150"
+          style={{ background: '#C84010', color: '#F5EDE0' }}
         >
           Start
         </button>
@@ -118,3 +134,5 @@ function HomeScreen({ onStart }: { onStart: () => void }) {
     </div>
   )
 }
+
+export { OrangeBlurs }
