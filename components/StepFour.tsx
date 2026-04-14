@@ -1,8 +1,17 @@
 'use client'
 
+import { useState } from 'react'
 import PulsingCircle from '@/components/PulsingCircle'
 
 export default function StepFour() {
+  const [showManual, setShowManual] = useState(false)
+
+  const handleClose = () => {
+    window.close()
+    // If still open after a tick, the browser blocked it — show fallback
+    setTimeout(() => setShowManual(true), 300)
+  }
+
   return (
     <div
       className="relative flex flex-col items-center justify-between h-dvh w-full px-6 py-14 overflow-hidden"
@@ -31,13 +40,21 @@ export default function StepFour() {
         </p>
       </div>
 
-      <button
-        onClick={() => window.close()}
-        className="relative z-10 w-full max-w-xs py-4 rounded-2xl text-base font-semibold active:scale-95 transition-transform duration-150"
-        style={{ background: '#F16C13', color: '#fff' }}
-      >
-        Let&apos;s go
-      </button>
+      <div className="relative z-10 flex flex-col items-center gap-3 w-full max-w-xs">
+        {showManual ? (
+          <p className="text-center text-base font-medium" style={{ color: 'rgba(34,21,9,0.6)' }}>
+            Close this tab to finish.
+          </p>
+        ) : (
+          <button
+            onClick={handleClose}
+            className="w-full py-4 rounded-2xl text-base font-semibold active:scale-95 transition-transform duration-150"
+            style={{ background: '#F16C13', color: '#fff' }}
+          >
+            Let&apos;s go
+          </button>
+        )}
+      </div>
     </div>
   )
 }
